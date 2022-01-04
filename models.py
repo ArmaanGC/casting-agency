@@ -4,27 +4,30 @@ from flask_sqlalchemy import SQLAlchemy
 import json
 from datetime import date
 
-#database_path = os.environ['DATABASE_URL']
-# if database_path.startswith("postgres://"):
-#   database_path = database_path.replace("postgres://", "postgresql://", 1)
+
+database_path = os.environ.get('DATABASE_URL')
 
 db = SQLAlchemy()
 
-def setup_db(app):
-    #hardcoding databse url as it is not getting picked while running db init command
-    app.config["SQLALCHEMY_DATABASE_URI"] = "postgresql://pdwptvgutkzryv:9412ade8f0b38973cf7d7d1219e9673d588c89e0f92eac3a5a1ae81eaefa2a9f@ec2-54-236-156-167.compute-1.amazonaws.com:5432/d6hmdtl72hg1j"
+#Setup app
+
+def setup_db(app,database_path=database_path):
+    app.config["SQLALCHEMY_DATABASE_URI"] = database_path
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
     db.app = app
     db.init_app(app)
     db.create_all()
     
+
+#Drop table if exists and creates new and populates it
+
 def db_drop_and_create_all():
-    '''drops the database tables and starts fresh
-    can be used to initialize a clean database
-    '''
     db.drop_all()
     db.create_all()
     db_populate()
+
+
+#Populates tables with dummy data
 
 def db_populate():
     new_actor1 = Actor('Ranbir', 'Male', '28')
@@ -48,6 +51,7 @@ def db_populate():
     db.session.execute(new_performance2)
     db.session.commit()
 
+
 #Performance table n:n relationship
 
 Performance = db.Table('Performance', db.Model.metadata,
@@ -55,39 +59,41 @@ Performance = db.Table('Performance', db.Model.metadata,
     db.Column('Actor_id', Integer, db.ForeignKey('actors.id'))
 )
 
+
 #Actors table
 
 class Actor(db.Model):  
-  __tablename__ = 'actors'
+    __tablename__ = 'actors'
 
-  id = Column(Integer, primary_key=True)
-  name = Column(String)
-  gender = Column(String)
-  age = Column(Integer)
+    id = Column(Integer, primary_key=True)
+    name = Column(String)
+    gender = Column(String)
+    age = Column(Integer)
 
-  def __init__(self, name, gender, age):
-    self.name = name
-    self.gender = gender
-    self.age = age
+    def __init__(self, name, gender, age):
+        self.name = name
+        self.gender = gender
+        self.age = age
 
-  def insert(self):
-    db.session.add(self)
-    db.session.commit()
-  
-  def update(self):
-    db.session.commit()
+    def insert(self):
+        db.session.add(self)
+        db.session.commit()
 
-  def delete(self):
-    db.session.delete(self)
-    db.session.commit()
+    def update(self):
+        db.session.commit()
 
-  def format(self):
-    return {
-      'id': self.id,
-      'name' : self.name,
-      'gender': self.gender,
-      'age': self.age
-    }
+    def delete(self):
+        db.session.delete(self)
+        db.session.commit()
+
+    def format(self):
+        return {
+          'id': self.id,
+          'name': self.name,
+          'gender': self.gender,
+          'age': self.age
+        }
+
 
 #Movie table
 
@@ -120,4 +126,3 @@ class Movie(db.Model):
             'id': self.id,
             'title': self.title,
             'release_date': self.release_date}
-

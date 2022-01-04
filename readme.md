@@ -15,13 +15,16 @@ This project helps gain better understanding of all the concepts learned through
 ## Setting up project locally
 
 ### Dependencies
-Developers should have Python3, pip, flask, node, and npm installed.
+Developers should have Python3, git, postgres, pip, flask, node, and npm installed.
 
 ### Set up environment and install requirements
 
-Setup a virtual environment as this keeps your dependencies for each project separate and organized. Then install dependencies by naviging to the `/backend` directory and running:
+Setup a virtual environment as this keeps your dependencies for each project separate and organized. Then run below commands to setup environment variables and install requirements.
 
 ```bash
+python -m venv myvenv
+source myvenv/Scripts/activate
+source setup.sh
 pip install -r requirements.txt
 ```
 
@@ -57,6 +60,90 @@ To run the tests, run
 python test_app.py
 ```
 
+## Host the project on heroku
+
+After testing app on loacal, make sure following files are present in source flder:
+
+* app.py
+* models.py
+* manage.py     
+* requirements.txt 
+* Procfile        
+* runtime.txt
+*setup.sh
+
+Following packages are needed for databse migration, make sure they are installed:
+
+* pip install Flask-Script==2.0.6
+* pip install Flask-Migrate==2.7.0
+* pip install psycopg2-binary==2.9.1
+
+### Deploying to heroku
+
+Install heroku CLI.
+Make sure you have an account on heroku as email and password will be prompted while logging from CLI, then follow the steps:
+
+1. Move to project directory as:
+
+```bash
+cd project
+```
+
+2. Login to heroku as:
+
+```bash
+heroku login -i
+```
+
+3. Initialize git repo as:
+
+```bash
+git init
+git config --global user.email "you@example.com"
+git config --global user.name "Your Name"
+```
+
+4. Create app on heroku and can be viewed as:
+
+```bash
+heroku create [my-app-name] --buildpack heroku/python
+git remote -v
+```
+
+5. Add postgreSQL addon for your database
+
+```bash
+heroku addons:create heroku-postgresql:hobby-dev --app [my-app-name]
+```
+
+6. App configurations as:
+
+```bash
+heroku config --app [my-app-name]
+```
+
+Also, you will have to go to the Heroku dashboard >> Particular App >> Settings >> Reveal Config Vars section and save the EXCITED variable and its value as true
+
+7. Add git commits and push:
+
+```bash
+git status
+git add .
+git commit -m "First Commit"
+git push heroku master
+```
+
+8. Once app is deployed, run migrations:
+
+```bash
+python manage.py db init
+python manage.py db migrate
+python manage.py db upgrade
+heroku run python manage.py db upgrade --app [my-app-name]
+```
+
+9. You app will be live 
+
 ## Auth0 details:
 
 1. Domain - dev-jdd6v-si.us.auth0.com
@@ -71,14 +158,18 @@ Project is hosted via heroku, link: https://casting-agency19.herokuapp.com/
 
 * Casting assistant access token:
 	
-	eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IlVScURuVWxJWlFYQko5MWFOVkdWOCJ9.eyJpc3MiOiJodHRwczovL2Rldi1qZGQ2di1zaS51cy5hdXRoMC5jb20vIiwic3ViIjoiYXV0aDB8NjFkMTgwYzBlMDljODMwMDZmMWIyMjQ2IiwiYXVkIjoiY2FzdGluZ2FnZW5jeSIsImlhdCI6MTY0MTI3MDg0MiwiZXhwIjoxNjQxMjc4MDQyLCJhenAiOiJ6OW40SUF6OWZYNEkwUVljS2RnSXpBdnVaaEpoVzF0eSIsInNjb3BlIjoiIiwicGVybWlzc2lvbnMiOlsiZ2V0OmFjdG9ycyIsImdldDptb3ZpZXMiXX0.CTa37ROFelB-XTpmlHGoSm5dEzA-FGavjtByM4o0z89BsrHcikiFftWubJdrCG7BTgGq7UctNvyTRHdzmyzr9jOHGyq_JM59SAQvzhi-TgLGTZHuBl3Z9wUauGOmkLUa1-ITkdULpoAogSe9bdQtpzZDI06Y1Lywrg4liomTPdIfodvJex6gbyuw5hNhQUt8E87BWs0gY9C3ydG-I_rJHsXnD68GUWJ3YZhky2e-1azwNXscm6YHoDctpYdpHNfKwhaFs7P0Pj4gh97topJl2ilCOp5-FrMzxQrd0BbiA9ODwvQ2IdOosz-N5EkjQ67HAjPr3RMQMLFi_P2-54av4g
+```bash	eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IlVScURuVWxJWlFYQko5MWFOVkdWOCJ9.eyJpc3MiOiJodHRwczovL2Rldi1qZGQ2di1zaS51cy5hdXRoMC5jb20vIiwic3ViIjoiYXV0aDB8NjFkMTgwYzBlMDljODMwMDZmMWIyMjQ2IiwiYXVkIjoiY2FzdGluZ2FnZW5jeSIsImlhdCI6MTY0MTMwNjY1MCwiZXhwIjoxNjQxMzEzODUwLCJhenAiOiJ6OW40SUF6OWZYNEkwUVljS2RnSXpBdnVaaEpoVzF0eSIsInNjb3BlIjoiIiwicGVybWlzc2lvbnMiOlsiZ2V0OmFjdG9ycyIsImdldDptb3ZpZXMiXX0.OdaUtM4Hbn6_TEUlh7TgPWGQtO-V9OOPdzrg2HNrcF08Q_w8r9Nz4M1GuuBPNMuGqf3bF8_LG8fXaKRrO9VZhD3pHs3kXI7-K8FPv6zsZbj7ZcvfbloNWYlm2WWiFlpQ-wZMrgw0myLom4P3cvxGntwVU5wWdr5oA9HXGvcgdSF4JA6wX_OWJqQhYHZV__Xc1ZUjV1o8aYxPfFa2p_0MJhgILpogcPurewTClYcOyk_49tsnbv4YGLkyH2ovuCyB3Lmj9oHlgN32OCXHX1DIjwIEffp3GYIiL9h-TMYMEvoO9HwhxWCwEK9A3QP6alTv8dGqtAJUQqmYzmFwycnJkA
+```
 	
 * Casting director access token:
 	
-	eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IlVScURuVWxJWlFYQko5MWFOVkdWOCJ9.eyJpc3MiOiJodHRwczovL2Rldi1qZGQ2di1zaS51cy5hdXRoMC5jb20vIiwic3ViIjoiYXV0aDB8NjFkMTgwOTRmYTJjZDEwMDY5ZWU2Mjc5IiwiYXVkIjoiY2FzdGluZ2FnZW5jeSIsImlhdCI6MTY0MTI3MDgyNywiZXhwIjoxNjQxMjc4MDI3LCJhenAiOiJ6OW40SUF6OWZYNEkwUVljS2RnSXpBdnVaaEpoVzF0eSIsInNjb3BlIjoiIiwicGVybWlzc2lvbnMiOlsiZGVsZXRlOmFjdG9ycyIsImdldDphY3RvcnMiLCJnZXQ6bW92aWVzIiwicG9zdDphY3RvcnMiLCJ1cGRhdGU6YWN0b3JzIiwidXBkYXRlOm1vdmllcyJdfQ.FPQ7_MVDInqgFF6X9HlHUa1sQJAxb3kaEB1JS5j6Nla-pRIE5Xv1Y9zdj1eRkALFSbSUAdR3PtGGkT4rX0HkgmXgdLl3cggOMwYTKaih2Amjl8v7sSVqGMLuvNmZcZSx7m8GUAmzlPdc6HbZqHySB-H2iauFuTaPbKcUEbstcFYjZ-wtC-Tul8GaUiQoXi-k3cy4hF-uhWLx4Xqi9oa1xVrDKClV1tgkLVv4VWsHT-d47qZDhGXDbdChEP0iHOT8EFQd3LQ74LXMoD--Zq5XrXXUV8JBb3rnlJsF92yosaax9k2Co2QkzX3teBmWQsX3S9FCSYMWcaXdnlW1p3xgKA
+```bash		eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IlVScURuVWxJWlFYQko5MWFOVkdWOCJ9.eyJpc3MiOiJodHRwczovL2Rldi1qZGQ2di1zaS51cy5hdXRoMC5jb20vIiwic3ViIjoiYXV0aDB8NjFkMTgwOTRmYTJjZDEwMDY5ZWU2Mjc5IiwiYXVkIjoiY2FzdGluZ2FnZW5jeSIsImlhdCI6MTY0MTMwNjY0MywiZXhwIjoxNjQxMzEzODQzLCJhenAiOiJ6OW40SUF6OWZYNEkwUVljS2RnSXpBdnVaaEpoVzF0eSIsInNjb3BlIjoiIiwicGVybWlzc2lvbnMiOlsiZGVsZXRlOmFjdG9ycyIsImdldDphY3RvcnMiLCJnZXQ6bW92aWVzIiwicG9zdDphY3RvcnMiLCJ1cGRhdGU6YWN0b3JzIiwidXBkYXRlOm1vdmllcyJdfQ.uIBsOzRMv0a3DrEBkNssHk0uZ1QZNzwIyDDUGYxZ-hNlOswcx09VlyABQxsj4aao6kfZBnHCZrQpqGiygPH3l0knbP-Bu2DqEGZN76bSb9z7De35iMv5JI7NuAgUEgd3SaSTI7J-QLlMg9OAOC0gqZc4NkVGx91OtA_c1SlWN7EYY6kLiNtOEPZXFR5C3U8hWIrVum3xcZU5_WVBM5IjwswuodWChIgE2C-1B1eXzMWmRfISnnmwx7hTJAWNqQ1lrvH0ewycMxE6A3VsUntgFCKXWN1OuedJ-EVy1hICSjOAClyUuWrJjqVwTLoyrVwYx8xBI_IVjfIhXxfPEsBHSw
+```
 	
 * Executive producer access token:
-	eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IlVScURuVWxJWlFYQko5MWFOVkdWOCJ9.eyJpc3MiOiJodHRwczovL2Rldi1qZGQ2di1zaS51cy5hdXRoMC5jb20vIiwic3ViIjoiYXV0aDB8NjFkMTgwNWZmYTJjZDEwMDY5ZWU2MjZlIiwiYXVkIjoiY2FzdGluZ2FnZW5jeSIsImlhdCI6MTY0MTI3MDgxOCwiZXhwIjoxNjQxMjc4MDE4LCJhenAiOiJ6OW40SUF6OWZYNEkwUVljS2RnSXpBdnVaaEpoVzF0eSIsInNjb3BlIjoiIiwicGVybWlzc2lvbnMiOlsiZGVsZXRlOmFjdG9ycyIsImRlbGV0ZTptb3ZpZXMiLCJnZXQ6YWN0b3JzIiwiZ2V0Om1vdmllcyIsInBvc3Q6YWN0b3JzIiwicG9zdDptb3ZpZXMiLCJ1cGRhdGU6YWN0b3JzIiwidXBkYXRlOm1vdmllcyJdfQ.Z7leh7gCbsmo1idYaI-13xGmaI9JUZqn9W4ODcHlp16vlHWiIqVAf5t4sXgMUeFLiQg72Mooh7BHWH49U1U6BjawPE9lPUNyWkQAeo_UPyMBwdGt34nA9HgYiUf3INUJ2-fpzvotZE_wTUa5IyBEiKy-Q1j2ZZnLpjtmxIHgSpGp9pypabNHe0k6J0JHUHRz_tz-Q3CPanf5753ZwmXvjCIUEEmfKTV74BMnp4HvKJVjyJs_Cl1rtxjG0tfHz2BzGGWz79Kifr6yjHxA7rJVJRZSGoI9RcLOR4xb4XjEBNr1N5CmXBp5QWtXbly5KfeBRRehldv7AEgQh04XAvtuAg
+
+```bash		eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IlVScURuVWxJWlFYQko5MWFOVkdWOCJ9.eyJpc3MiOiJodHRwczovL2Rldi1qZGQ2di1zaS51cy5hdXRoMC5jb20vIiwic3ViIjoiYXV0aDB8NjFkMTgwNWZmYTJjZDEwMDY5ZWU2MjZlIiwiYXVkIjoiY2FzdGluZ2FnZW5jeSIsImlhdCI6MTY0MTMwNjYzOCwiZXhwIjoxNjQxMzEzODM4LCJhenAiOiJ6OW40SUF6OWZYNEkwUVljS2RnSXpBdnVaaEpoVzF0eSIsInNjb3BlIjoiIiwicGVybWlzc2lvbnMiOlsiZGVsZXRlOmFjdG9ycyIsImRlbGV0ZTptb3ZpZXMiLCJnZXQ6YWN0b3JzIiwiZ2V0Om1vdmllcyIsInBvc3Q6YWN0b3JzIiwicG9zdDptb3ZpZXMiLCJ1cGRhdGU6YWN0b3JzIiwidXBkYXRlOm1vdmllcyJdfQ.PMPj3xR9N_XiQ4udbRdxSLIljrsgvPWvhvGIbxLXmqSTqwpmFKEw5lbVtIieVmMFq37jN38-HOfRsGV9LVcsI2_SLGJZqCo7xrA451EkdUK2cXJ-a2BxUGQCo7VMsZSmK0dGR6JL_mT1YUjyGj1TOLW-64zPsGj-TXD9OEn1gpWE62K1rTnX4DImdv02t8IVBV8OUrtYdIcvVVqiTKxzFl_IqS60D2MFEgLvqBjJr-gKURCrziEm-HTNLDIbtCdgnotFrKD7X2ZDgFrC2_YVQ-BGe5HUyG7_1X5y0n8B-hcovT8Zj-CydluLapUOeFa3DMKswk86ZAICSSuUnW0BCQ
+```
 
 ## API Reference
 
