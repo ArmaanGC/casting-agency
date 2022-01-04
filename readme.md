@@ -1,75 +1,219 @@
-MOTIVATION FOR PROJECT
+# Casting Agency Project
+
+This project is about company that is responsible for creating movies and managing and assigning actors to those movies.
+
+Following roles and functionalities have been implemented as part of this project:
+
+1. Casting assistant: who can view actors and movies and has limited access.
+2. Casting director: who can view and edit actors and movies, also create and delete actors, has limited access to movies.
+3. Executive producer: who has all the accesses to view, edit, create and delete actors and movies.
+
+## Casting Agency Project
+
 This project helps gain better understanding of all the concepts learned throughout the course and allowed me to implement the knowledge I gathered.
 
-Project Overview
-This project is about: The Casting Agency models a company that is responsible for creating movies and managing and assigning actors to those movies.
+## Setting up project locally
 
-The project requires 3 Auth0 profiles with permissions as below:
-    - Casting Assistant
-        - has limited access
-        - get:actors
-		- get:movies
-    - Casting Director
-        - has limited access
-        - delete:actors
-		- get:actors
-		- get:movies
-		- post:actors
-		- update:actors
-		- update:movies
-	- Executive Producer
-		- has all the permissions
-		- delete:actors
-		- delete:movies
-		- get:actors
-		- get:movies
-		- post:actors
-		- post:movies
-		- update:actors
-		- update:movies
+### Dependencies
+Developers should have Python3, pip, flask, node, and npm installed.
 
-Auth0 details used during the testing:
+### Set up environment and install requirements
 
-    - Domain - dev-jdd6v-si.us.auth0.com
+Setup a virtual environment as this keeps your dependencies for each project separate and organized. Then install dependencies by naviging to the `/backend` directory and running:
+
+```bash
+pip install -r requirements.txt
+```
+
+### Setup database
+
+1. Start your postgres server and update database path in models
+2. Create a db and add dummy data
+
+### Auth0 cnfiguration
+
+Update Auth0 params in auth file, following params have been used for the project:
+
+```bash
+AUTH0_DOMAIN = 'dev-jdd6v-si.us.auth0.com'
+ALGORITHMS = ['RS256']
+API_AUDIENCE = 'castingagency'
+```
+
+### Running the app locally
+
+Execute commands:
+
+```bash
+export FLASK_APP=app.py
+flask run
+```
+
+### Testing
+
+To run the tests, run
+
+```bash
+python test_app.py
+```
+
+## Auth0 details:
+
+1. Domain - dev-jdd6v-si.us.auth0.com
 	
-    - Client Id - z9n4IAz9fX4I0QYcKdgIzAvuZhJhW1ty
+2. Client Id - z9n4IAz9fX4I0QYcKdgIzAvuZhJhW1ty
+
+## Heroku deployment
+
+Project is hosted via heroku, link: https://casting-agency19.herokuapp.com/
+
+## Access tokens
+
+* Casting assistant access token:
 	
-	- Casting assistant access token:
+	eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IlVScURuVWxJWlFYQko5MWFOVkdWOCJ9.eyJpc3MiOiJodHRwczovL2Rldi1qZGQ2di1zaS51cy5hdXRoMC5jb20vIiwic3ViIjoiYXV0aDB8NjFkMTgwYzBlMDljODMwMDZmMWIyMjQ2IiwiYXVkIjoiY2FzdGluZ2FnZW5jeSIsImlhdCI6MTY0MTI3MDg0MiwiZXhwIjoxNjQxMjc4MDQyLCJhenAiOiJ6OW40SUF6OWZYNEkwUVljS2RnSXpBdnVaaEpoVzF0eSIsInNjb3BlIjoiIiwicGVybWlzc2lvbnMiOlsiZ2V0OmFjdG9ycyIsImdldDptb3ZpZXMiXX0.CTa37ROFelB-XTpmlHGoSm5dEzA-FGavjtByM4o0z89BsrHcikiFftWubJdrCG7BTgGq7UctNvyTRHdzmyzr9jOHGyq_JM59SAQvzhi-TgLGTZHuBl3Z9wUauGOmkLUa1-ITkdULpoAogSe9bdQtpzZDI06Y1Lywrg4liomTPdIfodvJex6gbyuw5hNhQUt8E87BWs0gY9C3ydG-I_rJHsXnD68GUWJ3YZhky2e-1azwNXscm6YHoDctpYdpHNfKwhaFs7P0Pj4gh97topJl2ilCOp5-FrMzxQrd0BbiA9ODwvQ2IdOosz-N5EkjQ67HAjPr3RMQMLFi_P2-54av4g
 	
-	eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IlVScURuVWxJWlFYQko5MWFOVkdWOCJ9.eyJpc3MiOiJodHRwczovL2Rldi1qZGQ2di1zaS51cy5hdXRoMC5jb20vIiwic3ViIjoiYXV0aDB8NjFkMTgwYzBlMDljODMwMDZmMWIyMjQ2IiwiYXVkIjoiY2FzdGluZ2FnZW5jeSIsImlhdCI6MTY0MTIyNDg0OSwiZXhwIjoxNjQxMjMyMDQ5LCJhenAiOiJ6OW40SUF6OWZYNEkwUVljS2RnSXpBdnVaaEpoVzF0eSIsInNjb3BlIjoiIiwicGVybWlzc2lvbnMiOlsiZ2V0OmFjdG9ycyIsImdldDptb3ZpZXMiXX0.A1DEm_87T5kpDuUXHUy99o9BFeZN9EX-y7W0isdqiNOsCqbFs8mWnC9vSQb2ctHmHOqR1dKeFLGT9WJ1nt8NtlDTHavvWJkhjLtpxEESGXL5ggjGRfN7K91X0juIamDXv2ut3m-YuH98fxF_kgD-eNbnrhnclgsGHaigC7q7B_9pwbp6Qze_BzA5r0UAVxYvesfbtkqjRBJovM2-EdFarHtfmX0sLL6ublrMgNrwySWassFVQyniZQw3oML6MDA21pWyM0xcIvH3vkbKoz3YvfLmh6430yQ7S-GC4o7-icSG4clWeX7Oo5OKvlWQ9W7LwWMe0tXnDg0CsTGJKThHsQ
+* Casting director access token:
 	
-	- Casting director access token:
+	eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IlVScURuVWxJWlFYQko5MWFOVkdWOCJ9.eyJpc3MiOiJodHRwczovL2Rldi1qZGQ2di1zaS51cy5hdXRoMC5jb20vIiwic3ViIjoiYXV0aDB8NjFkMTgwOTRmYTJjZDEwMDY5ZWU2Mjc5IiwiYXVkIjoiY2FzdGluZ2FnZW5jeSIsImlhdCI6MTY0MTI3MDgyNywiZXhwIjoxNjQxMjc4MDI3LCJhenAiOiJ6OW40SUF6OWZYNEkwUVljS2RnSXpBdnVaaEpoVzF0eSIsInNjb3BlIjoiIiwicGVybWlzc2lvbnMiOlsiZGVsZXRlOmFjdG9ycyIsImdldDphY3RvcnMiLCJnZXQ6bW92aWVzIiwicG9zdDphY3RvcnMiLCJ1cGRhdGU6YWN0b3JzIiwidXBkYXRlOm1vdmllcyJdfQ.FPQ7_MVDInqgFF6X9HlHUa1sQJAxb3kaEB1JS5j6Nla-pRIE5Xv1Y9zdj1eRkALFSbSUAdR3PtGGkT4rX0HkgmXgdLl3cggOMwYTKaih2Amjl8v7sSVqGMLuvNmZcZSx7m8GUAmzlPdc6HbZqHySB-H2iauFuTaPbKcUEbstcFYjZ-wtC-Tul8GaUiQoXi-k3cy4hF-uhWLx4Xqi9oa1xVrDKClV1tgkLVv4VWsHT-d47qZDhGXDbdChEP0iHOT8EFQd3LQ74LXMoD--Zq5XrXXUV8JBb3rnlJsF92yosaax9k2Co2QkzX3teBmWQsX3S9FCSYMWcaXdnlW1p3xgKA
 	
-	eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IlVScURuVWxJWlFYQko5MWFOVkdWOCJ9.eyJpc3MiOiJodHRwczovL2Rldi1qZGQ2di1zaS51cy5hdXRoMC5jb20vIiwic3ViIjoiYXV0aDB8NjFkMTgwOTRmYTJjZDEwMDY5ZWU2Mjc5IiwiYXVkIjoiY2FzdGluZ2FnZW5jeSIsImlhdCI6MTY0MTIyNDc4NywiZXhwIjoxNjQxMjMxOTg3LCJhenAiOiJ6OW40SUF6OWZYNEkwUVljS2RnSXpBdnVaaEpoVzF0eSIsInNjb3BlIjoiIiwicGVybWlzc2lvbnMiOlsiZGVsZXRlOmFjdG9ycyIsImdldDphY3RvcnMiLCJnZXQ6bW92aWVzIiwicG9zdDphY3RvcnMiLCJ1cGRhdGU6YWN0b3JzIiwidXBkYXRlOm1vdmllcyJdfQ.rqfi7Ppxsur8TBi7w_yM3bLYWDdnYK-S1H2rKX9MfagEsQj9lZhziHp2bgbykHw_o5i_MQwo2i4fJ12Rf5MJFxz7kW2GF_nizi97SYKKBffTVPaj4-XQVlPJs7ds5Vzy_P9JlobpngD4XUY1D3aTYofGXYD96RJ-oFn8cl_VmU1mee3Z-xDkVbo7hwuTD9hZwGel0804oYezRlmom7U9InZqejQDAlaozUOpWsTDyhE598sDnUxjI1FxJcRP49F8HN_9P85Gxnaw-aIXqq9cDvRah-XC-I-aQ_iF9oZlYwtGhR0YxSnWCWGEc9zbL8acH6xbBge1659zJE7YEzX3Kw
-	
-	- Executive producer access token:
-	eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IlVScURuVWxJWlFYQko5MWFOVkdWOCJ9.eyJpc3MiOiJodHRwczovL2Rldi1qZGQ2di1zaS51cy5hdXRoMC5jb20vIiwic3ViIjoiYXV0aDB8NjFkMTgwNWZmYTJjZDEwMDY5ZWU2MjZlIiwiYXVkIjoiY2FzdGluZ2FnZW5jeSIsImlhdCI6MTY0MTIyNDQ4NSwiZXhwIjoxNjQxMjMxNjg1LCJhenAiOiJ6OW40SUF6OWZYNEkwUVljS2RnSXpBdnVaaEpoVzF0eSIsInNjb3BlIjoiIiwicGVybWlzc2lvbnMiOlsiZGVsZXRlOmFjdG9ycyIsImRlbGV0ZTptb3ZpZXMiLCJnZXQ6YWN0b3JzIiwiZ2V0Om1vdmllcyIsInBvc3Q6YWN0b3JzIiwicG9zdDptb3ZpZXMiLCJ1cGRhdGU6YWN0b3JzIiwidXBkYXRlOm1vdmllcyJdfQ.dpBNNVA6R0gpMGCoWZmNzlRaJnbrOUyQd4zGcZSoDtgDSZEXNwRKaTGmE6pJGb7Jy2Gho6ZmWzpSRht1UUqHUf9bCVx4pEV2E7IS3dgfsn32IAbZjHgoB8kwS9eTLd7wmyzVxaYmV4IwhbU7eO1RTllcVWDHKPuO2k96ZQ2x9p-ZScIZeYWWWPr5MRuqVJkaxQ0feO_12Jgah0oUFq1cpnQVByyLiWJ5i91D43B9FL-9q0Wktv2-qU4Xv2MPCRAvYjVM52RlQcKimH6W0NPsa-_y2P9qUCXeUn8mk2sbyNjkfIXlXSJnewiQfa36h0IFrUVhh1-jlXyeTNxfz3Xl3g
+* Executive producer access token:
+	eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IlVScURuVWxJWlFYQko5MWFOVkdWOCJ9.eyJpc3MiOiJodHRwczovL2Rldi1qZGQ2di1zaS51cy5hdXRoMC5jb20vIiwic3ViIjoiYXV0aDB8NjFkMTgwNWZmYTJjZDEwMDY5ZWU2MjZlIiwiYXVkIjoiY2FzdGluZ2FnZW5jeSIsImlhdCI6MTY0MTI3MDgxOCwiZXhwIjoxNjQxMjc4MDE4LCJhenAiOiJ6OW40SUF6OWZYNEkwUVljS2RnSXpBdnVaaEpoVzF0eSIsInNjb3BlIjoiIiwicGVybWlzc2lvbnMiOlsiZGVsZXRlOmFjdG9ycyIsImRlbGV0ZTptb3ZpZXMiLCJnZXQ6YWN0b3JzIiwiZ2V0Om1vdmllcyIsInBvc3Q6YWN0b3JzIiwicG9zdDptb3ZpZXMiLCJ1cGRhdGU6YWN0b3JzIiwidXBkYXRlOm1vdmllcyJdfQ.Z7leh7gCbsmo1idYaI-13xGmaI9JUZqn9W4ODcHlp16vlHWiIqVAf5t4sXgMUeFLiQg72Mooh7BHWH49U1U6BjawPE9lPUNyWkQAeo_UPyMBwdGt34nA9HgYiUf3INUJ2-fpzvotZE_wTUa5IyBEiKy-Q1j2ZZnLpjtmxIHgSpGp9pypabNHe0k6J0JHUHRz_tz-Q3CPanf5753ZwmXvjCIUEEmfKTV74BMnp4HvKJVjyJs_Cl1rtxjG0tfHz2BzGGWz79Kifr6yjHxA7rJVJRZSGoI9RcLOR4xb4XjEBNr1N5CmXBp5QWtXbly5KfeBRRehldv7AEgQh04XAvtuAg
 
-URL where the project is hosted via heroku - https://casting-agency19.herokuapp.com/
+## API Reference
 
-API Endpoints for the project:
-Endpoints:
+### Getting Started
 
-GET /actors
-returns a list of all actors
+### Error Handling
 
-GET /movies
-returns a list of all movies
+Errors are returned as JSON in the following format:<br>
 
-POST /actors
-create a new actor
+    {
+        "success": False,
+        "error": 404,
+        "message": "resource not found"
+    }
 
-POST /movies
-create a new movie
+The API will return four types of errors:
 
-PATCH /actors/<int:actor_id>
-update an existing actor
+* 400 – bad request
+* 401 - unauthorized
+* 404 – resource not found
+* 422 – unprocessable
 
-PATCH /movies/<int:movie_id>
-update an existing movie
+### Endpoints
 
-DELETE /actors/<int:actor_id>
-delete an existing actor
+#### GET /actors
 
-DELETE /movies/<int:movie_id>
-delete an existing movie
+* General: Retrieves actors
+* Sample: `curl https://casting-agency19.herokuapp.com/actors -H "Authorization: Bearer ACCESS_TOKEN"` <br>
+
+        {
+			"success": true
+			"actors": [
+				{ "id": 1, "name": "Shahrukh", "gender": "Male", "age": 35 }
+			  ],
+		}
+
+
+#### GET /movies
+
+* General: Retrieves movies
+* Sample: `curl https://casting-agency19.herokuapp.com/movies -H "Authorization: Bearer ACCESS_TOKEN"`<br>
+
+        {
+			"success": true
+			"movies": [
+				{
+					"actors": ["Shahrukh", "Salman"],
+					"id": 1,
+					"title": "Life",
+					"release_date": "Mon, 17 May 2022 00:00:00 GMT"
+				}
+			  ],
+		}
+
+#### POST /actors
+
+* General: Creates new actor
+* Sample: `curl https://casting-agency19.herokuapp.com/actors -X POST -H "Content-Type: application/json" -H "Authorization: Bearer ACCESS_TOKEN" -d '{
+            "name": "Deepika",
+            "age": "29",
+            "gender": "Female"
+        }'`<br>
+		
+		{
+			"created": 1,
+			"success": true
+		}
+
+
+#### POST /movies
+
+* General: Creates new movie
+* Sample: `curl https://casting-agency19.herokuapp.com/movies -X POST -H "Content-Type: application/json" -H "Authorization: Bearer ACCESS_TOKEN" -d '{
+            "title" : "Titans",
+			"release_date" : "10/9/2022"}
+        }'`<br>
+		
+		{
+			"created": 1,
+			"success": true
+		}
+		
+#### PATCH /actors/\<int:id\>
+
+* General: Creates new actor
+* Sample: `curl https://casting-agency19.herokuapp.com/actors/1 -X POST -H "Content-Type: application/json" -H "Authorization: Bearer ACCESS_TOKEN" -d '{
+            "name": "Aamir"
+        }'`<br>
+		
+		{
+			"success": true
+			"actor": { "id": 1, 
+					   "name": "Aamir", 
+					   "gender": "Male", 
+					   "age": 35},
+		}
+		
+#### PATCH /movies/\<int:id\>
+
+* General: Creates new movie
+* Sample: `curl https://casting-agency19.herokuapp.com/movies/1 -X POST -H "Content-Type: application/json" -H "Authorization: Bearer ACCESS_TOKEN" -d '{
+            "title" : "Titans"
+        }'`<br>
+		
+		{
+			"success": true
+			"movie": [
+				{
+					"actors": ["Shahrukh", "Salman"],
+					"id": 1,
+					"title": "Titans",
+					"release_date": "Mon, 17 May 2022 00:00:00 GMT"
+				}
+			  ],
+		}
+		
+#### DELETE /actors/\<int:id\>
+
+* General:Deletes an actor
+* Sample: `curl https://casting-agency19.herokuapp.com/actors/2 -X DELETE -H "Authorization: Bearer ACCESS_TOKEN"`<br>
+
+        { 
+            "success": true,
+			"delete": 2
+        }
+		
+#### DELETE /movies/\<int:id\>
+
+* General:Deletes a movie
+* Sample: `curl https://casting-agency19.herokuapp.com/movies/2 -X DELETE -H "Authorization: Bearer ACCESS_TOKEN"`<br>
+
+        { 
+            "success": true,
+			"delete": 2
+        }
+		
+
+Note: All the endponts have been tested on postman, reviewer might use these tokens to test endpoints and access heroku url mentioned above.
